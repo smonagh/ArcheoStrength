@@ -12,6 +12,20 @@
     align-items: center;
 }
 
+.center-image{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: 50%;
+}
+
 #home_link{
     padding-bottom: 40px;
 }
+
+#table_caption{
+    font-weight:bold;
+
+    padding-bottom:30px;
+}  

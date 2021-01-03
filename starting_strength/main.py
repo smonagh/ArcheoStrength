@@ -4,6 +4,7 @@ from starting_strength import create_app, db
 from starting_strength.models import Workout
 from flask_migrate import Migrate
 from datetime import date
+from starting_strength.generate_plot import generate_image
 
 app = create_app()
 
@@ -27,7 +28,7 @@ def modify_data():
 
         try:
             workout = Workout(exercise=exercise, weight=weight, rep_1=rep_one, rep_2=rep_two,
-                            rep_3=rep_three, exercise_date=exercise_date)
+                              rep_3=rep_three, exercise_date=exercise_date)
             db.session.add(workout)
             db.session.commit()
         except Exception:
@@ -37,9 +38,21 @@ def modify_data():
 
     return render_template('modify.html')
 
-@app.route('/view', methods=['GET'])
-def view_data():
-    return render_template("view.html")
+@app.route('/view/<exercise>', methods=['GET'])
+def view_data(exercise):
+    data_dict = {'exercise': [], 'weight': [], 'rep_one': [], 'rep_two': [], 'rep_three': [], 'date': []}
+    permissible_exercises = ['bench', 'overhead', 'squat', 'deadlift', 'pull-down']
+
+    if not exercise:
+        return render_template("view.html", exercise_data=data_dict)
+
+    if exercise in permissible_exercises:
+        data_dict = get_view_data(exercise, data_dict)
+        generate_image(exercise, data_dict)
+        return render_template("view.html", exercise_data=data_dict)
+
+    else:
+        return redirect(url_for('index'))
 
 @app.route('/today', methods=['GET'])
 def todays_workout():
@@ -50,3 +63,17 @@ def process_input_date(input_date):
     output_date = date(int(split_date[0]), int(split_date[1]), int(split_date[2]))
 
     return output_date
+
+def get_view_data(exercise, data_dict):
+
+    query_result = db.session.query(Workout).filter_by(exercise=exercise).order_by(Workout.exercise_date).all()
+
+    for row in query_result:
+        data_dict['exercise'].append(row.exercise)
+        data_dict['weight'].append(row.weight)
+        data_dict['rep_one'].append(row.rep_1)
+        data_dict['rep_two'].append(row.rep_2)
+        data_dict['rep_three'].append(row.rep_3)
+        data_dict['date'].append(row.exercise_date)
+
+    return data_dict
