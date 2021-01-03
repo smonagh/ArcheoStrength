@@ -7,17 +7,9 @@ remain motivated to continue... we'll see!
 
 
 ## Installation
+For first time setup, run the install.sh script. This is only tested for Ubuntu 20.xx. However, it
+should be generally compliant for any system that utilizes the apt package manager
 
-This is still in its infancy, so the intall is fairly manual. An application installer will be created in the near future.
-
-1. Clone the repository
-2. Setup a virtual environment
-3. pip install -r requirements.txt
-4. flask db init
-5. flask db migrate
-6. flask db upgrade
-7. export FLASK_APP=starting_strength
-8. flask run
-
-Then you can access the application in your browser by accessing http://127.0.0.1:5000. Of course, if you are already familiar
-with flask then you can edit most of these step according to your preferences.
+## Usage
+Run the application file ArcheoEngine contained in the outermost directory. Then you can access the application in your browser by accessing http://127.0.0.1:5000.
+Of course, if you are already familiar with flask then you can edit the runtime application according to your preferences.

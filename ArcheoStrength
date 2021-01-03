@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Run the application
+. env/bin/activate
+flask run
