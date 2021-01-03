@@ -6,6 +6,43 @@
 </head>
 <body>
     <h1 id="Header" class="center"> Archeo Strength </h1>
-    <a class="center"> Home </a>
+    <a class="center" id="home_link" href="/"> Home </a>
+    <form class="center" method="POST" action = "/modify">
+        <div class = "form-group">
+            <label for="exercise"> Exercise: </label>
+            <select id="exercise" name="exercise"  required>
+                <option value="bench" selected="selected">
+                    Bench
+                </option>
+                <option value="overhead">Overhead</option>
+                <option value="pull-down">Pull-Down</option>
+                <option value="squat">Squat</option>
+                <option value="deadlift">Deadlift</option>
+            </select><br><br>
+            <label for="weight"> Weight: </label>
+            <input type="number" id="weight" name="weight" required><br><br>
+            <label for="set_one"> Set One Reps: </label>
+            <input type="number" id="set_one" name="set_one" required><br><br>
+            <label for="set_two"> Set Two Reps: </label>
+            <input type="number" id="set_two" name="set_two" required><br><br>
+            <label for="set_three"> Set Three Reps: </label>
+            <input type="number" id="set_three" name="set_three" required><br><br>
+            <label for="exercise_date">Date: </label>
+            <input type="date" id="exercise_date" name="exercise_date" required><br><br>
+        </div>
+
+        <input class="btn btn-primary center" type="submit" value="submit">
+    </form>
+
+    <script>
+        //Correct timezone support
+        Date.prototype.toDateInputValue = (function() {
+        var local = new Date(this);
+        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        return local.toJSON().slice(0,10);
+        });
+
+        document.getElementById('exercise_date').value = new Date().toDateInputValue();
+    </script>
 </body>
 </html>
