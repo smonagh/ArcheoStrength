@@ -9,6 +9,7 @@ def create_app():
     app.static_folder = 'static'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///archeo_strength.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
     from starting_strength.models import db
     db.init_app(app)

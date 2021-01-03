@@ -26,12 +26,28 @@ def modify_data():
         rep_three = int(request.form.get("set_three"))
         exercise_date = process_input_date(request.form.get("exercise_date"))
 
+        if verify_in_database(exercise, exercise_date):
+            try:
+                workout = Workout.query.filter_by(exercise=exercise, exercise_date=exercise_date).first()
+                workout.weight = weight
+                workout.rep_1 = rep_one
+                workout.rep_2 = rep_two
+                workout.rep_3 = rep_three
+                db.session.add(workout)
+                db.session.commit()
+                return redirect(url_for('modify_data'))
+            except Exception:
+                db.session.rollback()
+                return "Ran into error. <a href='/'> Home </a>"
+
         try:
             workout = Workout(exercise=exercise, weight=weight, rep_1=rep_one, rep_2=rep_two,
                               rep_3=rep_three, exercise_date=exercise_date)
             db.session.add(workout)
             db.session.commit()
+            return redirect(url_for('modify_data'))
         except Exception:
+            db.session.rollback()
             return "Bad data input. Data point already exists. <a href='/'>Home </a>"
 
         return redirect(url_for('modify_data'))
@@ -64,6 +80,15 @@ def process_input_date(input_date):
 
     return output_date
 
+@app.after_request
+def add_header(r):
+    
+    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    r.headers["Pragma"] = "no-cache"
+    r.headers["Expires"] = "0"
+    r.headers['Cache-Control'] = 'public, max-age=0'
+    return r
+
 def get_view_data(exercise, data_dict):
 
     query_result = db.session.query(Workout).filter_by(exercise=exercise).order_by(Workout.exercise_date).all()
@@ -77,3 +102,12 @@ def get_view_data(exercise, data_dict):
         data_dict['date'].append(row.exercise_date)
 
     return data_dict
+
+def verify_in_database(exercise, exercise_date):
+    
+    query_result = db.session.query(Workout).filter_by(exercise=exercise, exercise_date=exercise_date).first()
+
+    if query_result:
+        return True
+
+    return False
