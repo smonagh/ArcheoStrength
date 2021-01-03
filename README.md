@@ -3,7 +3,7 @@
 ## About
 A small flask application I put together to help keep track of my progress on the starting strength routine.
 I've started this over now a few different times, so I'm hoping that by keeping track of my data I will
-remain motivated to continue... will see!
+remain motivated to continue... we'll see!
 
 
 ## Installation
