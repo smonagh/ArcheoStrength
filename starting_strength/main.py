@@ -57,7 +57,7 @@ def modify_data():
 @app.route('/view/<exercise>', methods=['GET'])
 def view_data(exercise):
     data_dict = {'exercise': [], 'weight': [], 'rep_one': [], 'rep_two': [], 'rep_three': [], 'date': []}
-    permissible_exercises = ['bench', 'overhead', 'squat', 'deadlift', 'pull-down']
+    permissible_exercises = ['bench', 'overhead', 'squat', 'deadlift', 'pull-down', 'row', 'kickback']
 
     if not exercise:
         return render_template("view.html", exercise_data=data_dict)
