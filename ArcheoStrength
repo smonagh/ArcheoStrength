@@ -1,5 +1,14 @@
 #!/bin/sh
 
 # Run the application
+DIRECTORY=`dirname $0`
+cd $DIRECTORY
+echo $DIRECTORY
+
+# Kill all processes running on application port
+kill -9 $(lsof -t -i :5000)
+
 . env/bin/activate
-flask run
+nohup flask run &
+firefox http://127.0.0.1:5000/
+
