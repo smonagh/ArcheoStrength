@@ -74,6 +74,25 @@ def view_data(exercise):
 def todays_workout():
     return render_template("today.html")
 
+@app.route('/delete', methods=['POST'])
+def delete_data():
+    "Here"
+    data_to_delete = request.get_json()
+
+    print(data_to_delete.values())
+    if data_to_delete:
+        exercise_date = data_to_delete['exerciseDate']
+        exercise = data_to_delete['exercise']
+
+        workout = Workout.query.filter_by(exercise=exercise, exercise_date=exercise_date).first()
+        db.session.delete(workout)
+
+        db.session.commit()
+
+        return redirect(url_for('view_data', exercise=exercise))
+
+    return redirect(url_for('index'))
+
 def process_input_date(input_date):
     split_date = input_date.split('-')
     output_date = date(int(split_date[0]), int(split_date[1]), int(split_date[2]))

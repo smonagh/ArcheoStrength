@@ -27,21 +27,53 @@
                     <th id="set_two_column" scope="col">Set Two</th>
                     <th id="set_three_column" scope="col">Set Three</th>
                     <th id="date_column" scope="col">Date</th>
+                    <th id="delete_column" scope="col">Delete</th>
             </tr>
             </thead>
             <tbody>
                 {% for result in exercise_data['exercise'] %}
                 <tr>
-                    <td scope="row">{{ exercise_data['weight'][loop.index0] }}</td>
-                    <td scope="row">{{exercise_data['rep_one'][loop.index0]}}</td>
-                    <td scope="row">{{exercise_data['rep_two'][loop.index0]}}</td>
-                    <td scope="row">{{exercise_data['rep_three'][loop.index0]}}</td>
-                    <td scope="row">{{exercise_data['date'][loop.index0]}}</td>
+                    <td id="col_0-row_{{[loop.index0]}}" scope="row">{{ exercise_data['weight'][loop.index0] }}</td>
+                    <td id="col_1-row_{{[loop.index0]}}" scope="row">{{exercise_data['rep_one'][loop.index0]}}</td>
+                    <td id="col_2-row_{{[loop.index0]}}"scope="row">{{exercise_data['rep_two'][loop.index0]}}</td>
+                    <td id="col_3-row_{{[loop.index0]}}" scope="row">{{exercise_data['rep_three'][loop.index0]}}</td>
+                    <td id="col_4-row_{{[loop.index0]}}" scope="row">{{exercise_data['date'][loop.index0]}}</td>
+                    
+                    <td scope="row">
+                        <button name="delete" type="button" class="btn btn-danger"
+                         onclick="deleteData(document.getElementById('col_4-row_{{[loop.index0]}}')).innerHTML">Delete</button>
+                    </td>
+                    
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <script>
+        function deleteData(inputDate){
+
+            const exercise = document.getElementById("table_caption").innerHTML.split(" ")[1];
+            const exerciseDate = inputDate.textContent;
+            console.log(exercise);
+            console.log(exerciseDate);
+            const dataIdentifier = {
+                'exercise': exercise,
+                'exerciseDate': exerciseDate
+            };
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                console.log('Post request succesful');
+                window.location.reload();
+            }
+            xhttp.open('POST', '/delete');
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            
+            var data = JSON.stringify(dataIdentifier);
+            xhttp.send(data);
+};
+    </script>
     
 </body>
 </html>
